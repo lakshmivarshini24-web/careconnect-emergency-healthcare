@@ -39,7 +39,7 @@ export const EmergencyPage: React.FC = () => {
   const [needBlood, setNeedBlood] = useState<string>('B+');
   const [needAmbulance, setNeedAmbulance] = useState<boolean>(true);
 
-  // AI Output
+  // Recommendations Output
   const [recommendations, setRecommendations] = useState<AIRecommendationResult[] | null>(null);
 
   const emergencyTypes = [
@@ -90,10 +90,10 @@ export const EmergencyPage: React.FC = () => {
           </div>
           <div>
             <span className="text-xs font-extrabold uppercase tracking-widest text-rose-400">
-              Emergency Healthcare AI Dispatcher
+              Emergency Healthcare Dispatcher
             </span>
             <h1 className="text-2xl sm:text-3xl font-black">
-              AI Emergency Hospital Matcher
+              Emergency Hospital Matcher
             </h1>
           </div>
         </div>
@@ -254,19 +254,19 @@ export const EmergencyPage: React.FC = () => {
             className="w-full py-4 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-extrabold text-sm rounded-2xl shadow-xl shadow-rose-600/30 flex items-center justify-center gap-2 transition-transform transform active:scale-98"
           >
             <Sparkles className="w-5 h-5" />
-            <span>CALCULATE AI HOSPITAL RECOMMENDATION SCORES</span>
+            <span>CALCULATE HOSPITAL RECOMMENDATION SCORES</span>
           </button>
         </form>
       )}
 
-      {/* STEP 3: AI Recommendations Output */}
+      {/* STEP 3: Recommendations Output */}
       {step === 3 && recommendations && (
         <div className="space-y-6 animate-fade-in">
           
           <div className="flex flex-wrap items-center justify-between gap-4">
             <h2 className="text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
               <Award className="w-6 h-6 text-amber-500" />
-              <span>AI Emergency Recommendation Results</span>
+              <span>Emergency Recommendation Results</span>
             </h2>
 
             <button
@@ -281,7 +281,7 @@ export const EmergencyPage: React.FC = () => {
           <div className="p-3.5 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 rounded-2xl flex items-start gap-2.5 text-xs text-amber-900 dark:text-amber-200">
             <ShieldAlert className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
             <span>
-              <strong>DECISION SUPPORT NOTICE:</strong> The AI recommendation score is calculated using multi-criteria resource optimization (Specialist match 30%, ICU 20%, Travel time 15%, Bed capacity 15%, Oxygen 10%, Blood/Ambulance 10%). Emergency medical decisions should always be confirmed by qualified medical professionals.
+              <strong>DECISION SUPPORT NOTICE:</strong> Hospital recommendation scores are calculated using multi-criteria resource optimization (Specialist match 30%, ICU 20%, Travel time 15%, Bed capacity 15%, Oxygen 10%, Blood/Ambulance 10%). Emergency medical decisions should always be confirmed by qualified medical professionals.
             </span>
           </div>
 
@@ -315,7 +315,7 @@ export const EmergencyPage: React.FC = () => {
                     </div>
 
                     <div className="bg-gradient-to-br from-amber-500 to-rose-600 text-white px-4 py-2 rounded-2xl shadow-md text-center">
-                      <span className="text-[10px] font-bold uppercase tracking-wider block">AI Match Score</span>
+                      <span className="text-[10px] font-bold uppercase tracking-wider block">Match Score</span>
                       <strong className="text-2xl font-black block">{rec.score}%</strong>
                     </div>
                   </div>

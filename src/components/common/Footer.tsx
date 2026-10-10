@@ -28,7 +28,7 @@ export const Footer: React.FC = () => {
         <div>
           <h4 className="text-slate-200 font-semibold mb-3 uppercase tracking-wider text-[11px]">Emergency Directives</h4>
           <ul className="space-y-2">
-            <li><Link to="/emergency" className="hover:text-white transition-colors flex items-center gap-1 text-rose-400 font-medium">🚨 AI Emergency Matcher</Link></li>
+            <li><Link to="/emergency" className="hover:text-white transition-colors flex items-center gap-1 text-rose-400 font-medium">🚨 Emergency Hospital Matcher</Link></li>
             <li><Link to="/beds" className="hover:text-white transition-colors">🛏 Real-Time Bed Directory</Link></li>
             <li><Link to="/icu" className="hover:text-white transition-colors">🏥 Critical ICU & Ventilators</Link></li>
             <li><Link to="/blood" className="hover:text-white transition-colors">🩸 Blood Stock & Request</Link></li>
@@ -45,13 +45,13 @@ export const Footer: React.FC = () => {
             <li><Link to="/hospital-admin" className="hover:text-white transition-colors flex items-center gap-1"><FileCode2 className="w-3.5 h-3.5" /> Staff Command Panel</Link></li>
             <li><span className="text-slate-500 block">Data Abstraction: dataService.ts</span></li>
             <li><span className="text-slate-500 block">PubSub Sync: BroadcastChannel</span></li>
-            <li><span className="text-slate-500 block">Scoring: AI Weight Engine</span></li>
+            <li><span className="text-slate-500 block">Scoring: Resource Weight Engine</span></li>
           </ul>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 mt-8 border-t border-slate-800/60 flex flex-wrap justify-between items-center text-slate-500 text-[11px]">
-        <p>© 2026 CareConnect AI Emergency System. Scalable for multi-hospital deployments.</p>
+        <p>© 2026 CareConnect Emergency System. Scalable for multi-hospital deployments.</p>
         <p>Built with React, TypeScript, Vite, Tailwind CSS & OpenStreetMap</p>
       </div>
     </footer>

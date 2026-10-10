@@ -20,6 +20,7 @@ import { SpecialistsPage } from './pages/SpecialistsPage';
 import { AmbulancesPage } from './pages/AmbulancesPage';
 import { EmergencyPage } from './pages/EmergencyPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
+import { StaffLoginPage } from './pages/StaffLoginPage';
 import { DemoPage } from './pages/DemoPage';
 
 export function App() {
@@ -56,6 +57,7 @@ export function App() {
             <Route path="/ambulances" element={<AmbulancesPage />} />
             <Route path="/emergency" element={<EmergencyPage />} />
             <Route path="/hospital-admin" element={<AdminDashboardPage />} />
+            <Route path="/hospital-admin/login" element={<StaffLoginPage />} />
             <Route path="/demo" element={<DemoPage />} />
           </Routes>
         </main>

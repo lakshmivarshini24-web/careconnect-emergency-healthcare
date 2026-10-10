@@ -34,7 +34,7 @@ export const DashboardPage: React.FC = () => {
   const totalSpecialists = hospitals.reduce((acc, h) => acc + h.specialists.filter(s => s.availability === 'Available').length, 0);
   const totalAmbulances = hospitals.reduce((acc, h) => acc + h.ambulances.filter(a => a.status === 'Available').length, 0);
 
-  // Default AI Recommendation for high-volume emergency
+  // Default recommendation for high-volume emergency
   const aiRecommendations = aiRecommendationService.recommendHospitals(hospitals, {
     emergencyType: 'Trauma / Emergency',
     userLat: 12.9716,
@@ -62,7 +62,7 @@ export const DashboardPage: React.FC = () => {
         <div className="relative z-10 max-w-3xl space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-rose-500/20 border border-rose-500/30 rounded-full text-rose-300 text-xs font-semibold backdrop-blur">
             <Sparkles className="w-3.5 h-3.5 text-rose-400" />
-            <span>AI-Powered Emergency Healthcare Dispatch</span>
+            <span>Emergency Healthcare Coordination</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
@@ -70,7 +70,7 @@ export const DashboardPage: React.FC = () => {
           </h1>
 
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-            Live bed matrix tracking, critical ICU availability, blood bank inventory, ambulance dispatch, and explainable AI hospital matching across <strong className="text-white">{selectedCity}</strong>.
+            Live bed matrix tracking, critical ICU availability, blood bank inventory, ambulance dispatch, and hospital matching based on available resources and emergency requirements across <strong className="text-white">{selectedCity}</strong>.
           </p>
 
           <div className="pt-4 flex flex-wrap items-center gap-4">
@@ -79,7 +79,7 @@ export const DashboardPage: React.FC = () => {
               className="px-6 py-3.5 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-extrabold text-base rounded-2xl shadow-xl shadow-rose-600/40 flex items-center gap-2 transition-all transform hover:scale-105 border border-rose-500"
             >
               <Siren className="w-6 h-6 animate-pulse text-yellow-300" />
-              <span>START EMERGENCY AI MATCHING</span>
+              <span>FIND THE BEST-MATCHED HOSPITAL</span>
             </Link>
 
             <Link
@@ -178,7 +178,7 @@ export const DashboardPage: React.FC = () => {
         </div>
       </section>
 
-      {/* AI Recommended Hospital Highlight Card */}
+      {/* Recommended Hospital Highlight Card */}
       {topRecommended && (
         <section className="bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-indigo-500/10 border border-amber-500/30 rounded-3xl p-6 relative overflow-hidden">
           <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
@@ -188,7 +188,7 @@ export const DashboardPage: React.FC = () => {
               </div>
               <div>
                 <span className="text-xs font-extrabold uppercase tracking-widest text-amber-600 dark:text-amber-400">
-                  🤖 Top AI Recommended Emergency Center
+                  ⭐ Top Recommended Emergency Center
                 </span>
                 <h3 className="text-xl font-black text-slate-900 dark:text-white">
                   {topRecommended.name} ({topScore}% Match)

@@ -142,3 +142,14 @@ export interface DataServiceConfig {
   supabaseAnonKey?: string;
   apiBaseUrl?: string;
 }
+
+export type SessionType = 'judge-demo' | 'staff-authenticated';
+
+export interface AuthSession {
+  type: SessionType;
+  email?: string;
+  displayName: string;
+  isJudgeDemo: boolean;
+  startedAt: string;
+}
+

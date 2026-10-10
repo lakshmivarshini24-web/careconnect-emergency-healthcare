@@ -1,4 +1,4 @@
-# 🚑 CareConnect – AI Emergency Healthcare Coordination Platform
+# 🚑 CareConnect – Emergency Healthcare Coordination Platform
 
 **CareConnect** is a functional, modern, real-time emergency healthcare coordination system designed to connect hospitals, patients, blood donors, specialists, and ambulances during critical medical emergencies.
 
@@ -8,7 +8,7 @@
 
 - 🟢 **Live Zero-Latency Real-Time Data**: Automatically broadcasts bed status, ICU capacity, blood stock, and ambulance dispatches across multiple browser tabs/windows using native browser `BroadcastChannel` & PubSub event engine.
 - 🛏 **100-Bed Visual Matrix**: View individual bed status (`Available 🟢`, `Occupied 🔴`, `Maintenance ⚪`), Ward type, Bed ID, and masked patient IDs (`PAT-104`).
-- 🤖 **AI Emergency Decision Matcher**: Transparent explainable scoring engine evaluating specialist match (30%), ICU open capacity (20%), travel time (15%), bed capacity (15%), oxygen (10%), and blood/ambulance (10%).
+- 🏥 **Emergency Decision Matcher**: Transparent scoring engine evaluating specialist match (30%), ICU open capacity (20%), travel time (15%), bed capacity (15%), oxygen (10%), and blood/ambulance (10%).
 - 🏥 **ICU & Oxygen Supported Resource Directory**: Sort hospitals by ICU open beds, ventilators, oxygen cylinders, and high-flow nasal cannula units.
 - 🩸 **Emergency Blood Bank & Donor Response Network**: Submit emergency blood requests and notify compatible blood donors with real-time accept/decline workflow.
 - 🚑 **Ambulance Tracking & Dispatch**: Request nearest available ALS/BLS ambulance unit with live ETA calculation and status tracking.
@@ -55,7 +55,7 @@ src/
 │   ├── bloodService.ts      # Blood inventory & emergency request workflow
 │   ├── specialistService.ts# Specialist doctor availability tracker
 │   ├── ambulanceService.ts # Ambulance tracking & dispatching
-│   ├── aiRecommendationService.ts # Explainable AI recommendation scoring algorithm
+│   ├── aiRecommendationService.ts # Multi-criteria recommendation scoring algorithm
 │   └── dataService.ts       # Central facade abstraction layer (Pluggable for Google Sheets / Firebase / Supabase)
 ├── hooks/
 │   ├── useRealtimeData.ts   # React hook for live data subscriptions

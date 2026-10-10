@@ -1,9 +1,9 @@
 import { Hospital, EmergencyQuery, AIRecommendationResult } from '../types';
 
 /**
- * AI Decision-Support Recommendation Engine for Emergency Healthcare Coordination
+ * Multi-Criteria Decision-Support Recommendation Engine for Emergency Healthcare Coordination
  * 
- * Uses explainable weight-based multi-criteria evaluation to match patients to optimal hospitals
+ * Uses transparent weight-based multi-criteria evaluation to match patients to optimal hospitals
  * during critical medical emergencies.
  */
 export class AIRecommendationService {

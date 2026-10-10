@@ -8,8 +8,8 @@ export class BedService {
 
   public filterBeds(beds: Bed[], wardFilter?: WardType | 'All', statusFilter?: Bed['status'] | 'All'): Bed[] {
     return beds.filter(b => {
-      const matchWard = !wardFilter || wardFilter === 'All' || b.ward === wardFilter;
-      const matchStatus = !statusFilter || statusFilter === 'All' || b.status === statusFilter;
+      const matchWard = !wardFilter || wardFilter === 'All' || b.ward.toLowerCase().trim() === wardFilter.toLowerCase().trim();
+      const matchStatus = !statusFilter || statusFilter === 'All' || b.status.toLowerCase().trim() === statusFilter.toLowerCase().trim();
       return matchWard && matchStatus;
     });
   }

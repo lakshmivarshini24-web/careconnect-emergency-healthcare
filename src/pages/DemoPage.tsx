@@ -257,7 +257,7 @@ export const DemoPage: React.FC = () => {
             ▶ Simulate Specialist Duty Status
           </h3>
           <p className="text-xs text-slate-500">
-            Toggles doctor availability (Available ➔ In Surgery) and updates AI emergency matcher weights.
+            Toggles doctor availability (Available ➔ In Surgery) and updates emergency matcher weights.
           </p>
         </button>
 

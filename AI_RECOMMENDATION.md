@@ -1,6 +1,6 @@
-# 🤖 CareConnect – AI Recommendation & Demand Prediction Engine
+# 🏥 CareConnect – Hospital Recommendation & Matching Engine
 
-This document details the explainable decision-support algorithm powering **CareConnect's AI Emergency Hospital Recommendation Engine** (`aiRecommendationService.ts`).
+This document details the multi-criteria decision-support algorithm powering **CareConnect's Emergency Hospital Recommendation Engine** (`aiRecommendationService.ts`).
 
 ---
 
@@ -8,7 +8,7 @@ This document details the explainable decision-support algorithm powering **Care
 
 During medical emergencies, recommending solely the **closest** hospital frequently fails when that hospital's ICU is saturated, its cardiologists are in surgery, or its trauma beds are full.
 
-CareConnect's AI recommendation engine evaluates multi-factorial clinical and logistical parameters to rank hospital suitability.
+CareConnect's recommendation engine evaluates multi-factorial clinical and logistical parameters to rank hospital suitability.
 
 ---
 
@@ -31,7 +31,7 @@ $$S_h = W_{\text{spec}} \cdot S_{\text{spec}} + W_{\text{icu}} \cdot S_{\text{ic
 
 ---
 
-## 💡 Explainable AI ("WHY THIS HOSPITAL?")
+## 💡 Transparent Decision Support ("WHY THIS HOSPITAL?")
 
 CareConnect output is 100% transparent and explainable to patients and emergency workers. Each recommendation result outputs specific justification flags:
 

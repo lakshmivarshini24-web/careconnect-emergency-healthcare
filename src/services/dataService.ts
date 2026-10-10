@@ -112,7 +112,7 @@ export class DataService {
     return ambulanceService.requestAmbulance(userLat, userLng, emergencyType, destinationId);
   }
 
-  // --- AI Engine ---
+  // --- Hospital Recommendation Engine ---
   public getAIRecommendation(hospitals: Hospital[], query: EmergencyQuery): AIRecommendationResult[] {
     return aiRecommendationService.recommendHospitals(hospitals, query);
   }
@@ -144,6 +144,22 @@ export class DataService {
 
   public resetData() {
     realtimeService.resetToDummyData();
+  }
+
+  public getMode(): 'live' | 'demo' {
+    return realtimeService.getMode();
+  }
+
+  public isDemoMode(): boolean {
+    return realtimeService.getMode() === 'demo';
+  }
+
+  public setMode(mode: 'live' | 'demo') {
+    realtimeService.setMode(mode);
+  }
+
+  public resetDemoData() {
+    realtimeService.resetDemoData();
   }
 }
 

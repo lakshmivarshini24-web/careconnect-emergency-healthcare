@@ -1,6 +1,6 @@
 # 🎬 CareConnect – Hackathon Live Demonstration Guide
 
-Follow this guide to demonstrate CareConnect's **zero-latency multi-tab real-time synchronization** and **AI emergency dispatch capabilities** to hackathon judges.
+Follow this guide to demonstrate CareConnect's **zero-latency multi-tab real-time synchronization** and **emergency dispatch and hospital recommendation capabilities** to hackathon judges.
 
 ---
 
@@ -31,11 +31,11 @@ Follow this guide to demonstrate CareConnect's **zero-latency multi-tab real-tim
 
 ---
 
-## 🚨 2. Demonstrating the AI Emergency Hospital Matcher
+## 🚨 2. Demonstrating the Emergency Hospital Matcher
 
 1. Click the glowing **🚨 EMERGENCY** button in the top navigation bar or go to `/emergency`.
 2. **Step 1**: Click **Heart Attack ❤️**.
-3. **Step 2**: Enter location: `City Center Mall`, check **Need ICU** & **Need Oxygen**, select **Cardiologist**. Click **CALCULATE AI HOSPITAL RECOMMENDATION SCORES**.
+3. **Step 2**: Enter location: `City Center Mall`, check **Need ICU** & **Need Oxygen**, select **Cardiologist**. Click **CALCULATE HOSPITAL RECOMMENDATION SCORES**.
 4. **Result**:
    - Evaluates all 8 hospitals using multi-criteria weighted scoring algorithm.
    - Highlights Top Recommended Hospital with **94% Match Score**.

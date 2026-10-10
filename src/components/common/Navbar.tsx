@@ -19,7 +19,8 @@ import {
   User
 } from 'lucide-react';
 import { LiveIndicator } from './LiveIndicator';
-import { UserRole } from '../../types';
+import { UserRole, AuthSession } from '../../types';
+import { authService } from '../../services/authService';
 
 interface NavbarProps {
   isConnected: boolean;
@@ -31,8 +32,14 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ isConnected, lastUpdated, activeRole, onRoleChange }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [session, setSession] = useState<AuthSession | null>(() => authService.getSession());
   const navigate = useNavigate();
   const location = useLocation();
+
+  React.useEffect(() => {
+    const unsub = authService.subscribe((s) => setSession(s));
+    return () => unsub();
+  }, []);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +57,11 @@ export const Navbar: React.FC<NavbarProps> = ({ isConnected, lastUpdated, active
     { name: 'Specialists', path: '/specialists', icon: UserCheck },
     { name: 'Ambulances', path: '/ambulances', icon: Truck },
     { name: 'Donors', path: '/donors', icon: HeartHandshake },
-    { name: 'Staff Admin', path: '/hospital-admin', icon: ShieldCheck },
+    { 
+      name: session ? (session.isJudgeDemo ? 'Staff Admin (Demo)' : 'Staff Admin') : 'Staff Admin', 
+      path: session ? '/hospital-admin' : '/hospital-admin/login', 
+      icon: ShieldCheck 
+    },
     { name: 'Demo Simulator', path: '/demo', icon: PlayCircle },
   ];
 
@@ -62,6 +73,25 @@ export const Navbar: React.FC<NavbarProps> = ({ isConnected, lastUpdated, active
           <LiveIndicator isConnected={isConnected} lastUpdated={lastUpdated} showToggle={true} />
         </div>
         <div className="flex items-center gap-4">
+          {session?.isJudgeDemo && (
+            <div className="flex items-center gap-2 bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-0.5 rounded-full text-[11px] font-bold">
+              <span>⚖️ Demo Mode</span>
+              {session.email && (
+                <span className="text-amber-200/90 font-normal">({session.email})</span>
+              )}
+              <button
+                type="button"
+                onClick={() => {
+                  authService.logout();
+                  navigate('/hospitals');
+                }}
+                className="text-rose-300 hover:text-white underline text-[10px] cursor-pointer ml-1"
+                title="Exit Judge Demo Mode"
+              >
+                Exit
+              </button>
+            </div>
+          )}
           <div className="hidden sm:flex items-center gap-2 text-slate-300">
             <User className="w-3.5 h-3.5" />
             <span>Active Role:</span>
@@ -94,11 +124,8 @@ export const Navbar: React.FC<NavbarProps> = ({ isConnected, lastUpdated, active
               <HeartPulse className="w-6 h-6 animate-pulse" />
             </div>
             <div>
-              <span className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white flex items-center gap-1">
+              <span className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white block">
                 CareConnect
-                <span className="text-xs px-1.5 py-0.5 bg-rose-100 dark:bg-rose-950 text-rose-600 dark:text-rose-400 font-semibold rounded-md border border-rose-200 dark:border-rose-900">
-                  AI
-                </span>
               </span>
               <span className="block text-[10px] uppercase font-bold tracking-wider text-slate-500 dark:text-slate-400">
                 Emergency Healthcare Coordination
@@ -140,7 +167,8 @@ export const Navbar: React.FC<NavbarProps> = ({ isConnected, lastUpdated, active
         <nav className="hidden lg:flex items-center gap-1 py-2 overflow-x-auto border-t border-slate-100 dark:border-slate-800 text-xs">
           {navLinks.map(link => {
             const Icon = link.icon;
-            const isActive = location.pathname === link.path;
+            const isActive = location.pathname === link.path ||
+              (link.path.startsWith('/hospital-admin') && location.pathname.startsWith('/hospital-admin'));
             return (
               <Link
                 key={link.path}

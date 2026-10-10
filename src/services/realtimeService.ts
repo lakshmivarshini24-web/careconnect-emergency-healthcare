@@ -12,47 +12,92 @@ class RealtimeService {
   private broadcastChannel: BroadcastChannel | null = null;
   private isConnected: boolean = true;
   private lastUpdatedTime: string = new Date().toISOString();
+  private mode: 'live' | 'demo' = 'live';
 
   constructor() {
+    this.detectInitialMode();
     this.initData();
     this.initBroadcastChannel();
   }
 
+  private detectInitialMode() {
+    if (typeof sessionStorage !== 'undefined') {
+      try {
+        const rawSession = sessionStorage.getItem('careconnect_auth_session');
+        if (rawSession) {
+          const session = JSON.parse(rawSession);
+          if (session && session.isJudgeDemo) {
+            this.mode = 'demo';
+          }
+        }
+      } catch (e) {
+        // Fallback to 'live'
+      }
+    }
+  }
+
+  private getStorageKeys() {
+    if (this.mode === 'demo') {
+      return {
+        hospitalsKey: 'careconnect_demo_hospitals',
+        bedsKey: 'careconnect_demo_beds',
+        requestsKey: 'careconnect_demo_blood_requests',
+        channelName: 'careconnect_demo_channel'
+      };
+    }
+    return {
+      hospitalsKey: 'careconnect_hospitals',
+      bedsKey: 'careconnect_beds',
+      requestsKey: 'careconnect_blood_requests',
+      channelName: 'careconnect_realtime_channel'
+    };
+  }
+
   private initData() {
-    // Try loading from localStorage for persistent prototype state across refreshes
-    const savedHospitals = localStorage.getItem('careconnect_hospitals');
-    const savedBeds = localStorage.getItem('careconnect_beds');
-    const savedRequests = localStorage.getItem('careconnect_blood_requests');
+    const { hospitalsKey, bedsKey, requestsKey } = this.getStorageKeys();
+    const savedHospitals = typeof localStorage !== 'undefined' ? localStorage.getItem(hospitalsKey) : null;
+    const savedBeds = typeof localStorage !== 'undefined' ? localStorage.getItem(bedsKey) : null;
+    const savedRequests = typeof localStorage !== 'undefined' ? localStorage.getItem(requestsKey) : null;
 
     if (savedHospitals && savedBeds) {
       try {
         this.hospitals = JSON.parse(savedHospitals);
         this.bedsMap = JSON.parse(savedBeds);
       } catch (e) {
-        this.hospitals = initialHospitals;
-        this.bedsMap = initialHospitalBeds;
+        this.hospitals = JSON.parse(JSON.stringify(initialHospitals));
+        this.bedsMap = JSON.parse(JSON.stringify(initialHospitalBeds));
       }
     } else {
-      this.hospitals = initialHospitals;
-      this.bedsMap = initialHospitalBeds;
+      this.hospitals = JSON.parse(JSON.stringify(initialHospitals));
+      this.bedsMap = JSON.parse(JSON.stringify(initialHospitalBeds));
     }
 
     if (savedRequests) {
       try {
         this.bloodRequests = JSON.parse(savedRequests);
       } catch (e) {
-        this.bloodRequests = initialBloodRequests;
+        this.bloodRequests = JSON.parse(JSON.stringify(initialBloodRequests));
       }
     } else {
-      this.bloodRequests = initialBloodRequests;
+      this.bloodRequests = JSON.parse(JSON.stringify(initialBloodRequests));
     }
 
     this.recalculateCountsAll();
   }
 
   private initBroadcastChannel() {
+    if (this.broadcastChannel) {
+      try {
+        this.broadcastChannel.close();
+      } catch (e) {
+        // ignore
+      }
+      this.broadcastChannel = null;
+    }
+
+    const { channelName } = this.getStorageKeys();
     if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
-      this.broadcastChannel = new BroadcastChannel('careconnect_realtime_channel');
+      this.broadcastChannel = new BroadcastChannel(channelName);
       this.broadcastChannel.onmessage = (event) => {
         const { type, payload } = event.data;
         if (type === 'SYNC_ALL') {
@@ -70,10 +115,13 @@ class RealtimeService {
 
   private saveAndBroadcast(latestNotification?: NotificationItem) {
     this.lastUpdatedTime = new Date().toISOString();
+    const { hospitalsKey, bedsKey, requestsKey } = this.getStorageKeys();
     try {
-      localStorage.setItem('careconnect_hospitals', JSON.stringify(this.hospitals));
-      localStorage.setItem('careconnect_beds', JSON.stringify(this.bedsMap));
-      localStorage.setItem('careconnect_blood_requests', JSON.stringify(this.bloodRequests));
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(hospitalsKey, JSON.stringify(this.hospitals));
+        localStorage.setItem(bedsKey, JSON.stringify(this.bedsMap));
+        localStorage.setItem(requestsKey, JSON.stringify(this.bloodRequests));
+      }
     } catch (e) {
       console.warn('LocalStorage save limit exceeded', e);
     }
@@ -339,13 +387,47 @@ class RealtimeService {
     this.hospitals.forEach(h => this.recalculateCounts(h.id));
   }
 
+  public getMode(): 'live' | 'demo' {
+    return this.mode;
+  }
+
+  public setMode(newMode: 'live' | 'demo') {
+    if (this.mode !== newMode) {
+      this.mode = newMode;
+      this.initData();
+      this.initBroadcastChannel();
+      this.notifyListeners('ALL_UPDATED', null);
+      this.notifyListeners('MODE_CHANGED', newMode);
+    }
+  }
+
+  public resetDemoData() {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('careconnect_demo_hospitals');
+      localStorage.removeItem('careconnect_demo_beds');
+      localStorage.removeItem('careconnect_demo_blood_requests');
+    }
+    this.hospitals = JSON.parse(JSON.stringify(initialHospitals));
+    this.bedsMap = JSON.parse(JSON.stringify(initialHospitalBeds));
+    this.bloodRequests = JSON.parse(JSON.stringify(initialBloodRequests));
+    this.notifications = [];
+    this.recalculateCountsAll();
+    this.saveAndBroadcast();
+  }
+
   public resetToDummyData() {
-    localStorage.removeItem('careconnect_hospitals');
-    localStorage.removeItem('careconnect_beds');
-    localStorage.removeItem('careconnect_blood_requests');
-    this.hospitals = initialHospitals;
-    this.bedsMap = initialHospitalBeds;
-    this.bloodRequests = initialBloodRequests;
+    if (this.mode === 'demo') {
+      this.resetDemoData();
+      return;
+    }
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('careconnect_hospitals');
+      localStorage.removeItem('careconnect_beds');
+      localStorage.removeItem('careconnect_blood_requests');
+    }
+    this.hospitals = JSON.parse(JSON.stringify(initialHospitals));
+    this.bedsMap = JSON.parse(JSON.stringify(initialHospitalBeds));
+    this.bloodRequests = JSON.parse(JSON.stringify(initialBloodRequests));
     this.notifications = [];
     this.recalculateCountsAll();
     this.saveAndBroadcast();
